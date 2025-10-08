@@ -2,8 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import scipy.stats as stats
+import ipywidgets as widgets
+from IPython.display import display
 
-
+# Parameters
 S_0 = 40
 r = .03
 vol = .2
@@ -32,6 +34,7 @@ print(monte_carlo_call_put(S_0, r, vol, T, K=40))
 
 #Pricing options using B&S formula
 def BS_call_put(S_0, r, vol, T, K):
+    #Calculate d1 and d2
     d1 = (np.log(S_0 / K) + (r + 0.5 * vol**2) * T) / (vol * np.sqrt(T))
     d2 = d1 - vol * np.sqrt(T)
     
@@ -40,6 +43,7 @@ def BS_call_put(S_0, r, vol, T, K):
     
     return call_price, put_price
 
+"""
 #Binomial Tree pricing model 
 def bin_tree_call_put(S_0, r, vol, T, K, n_steps=100):
     dt = T/n_steps
@@ -47,13 +51,10 @@ def bin_tree_call_put(S_0, r, vol, T, K, n_steps=100):
     d = 1/u
     p = (np.exp(r * dt) - d) / (u - d) 
     # Initialize asset prices at maturity
-    
-    
-
-    
+"""
 
 
-#Show all result in DataFrame
+#Show all results in a DataFrame
 
 def results(S_0, r, vol, T, K):
     mc_results = monte_carlo_call_put(S_0, r, vol, T, K)
@@ -68,4 +69,15 @@ def results(S_0, r, vol, T, K):
 
 print(results(S_0, r, vol, T, K = 40))
 
+"""
+# Interactive widget to change strike price and see results
+def interactive_option_pricing(S_0, r, vol, T):
+    K_slider = widgets.FloatSlider(value=40, min=10, max=70, step=1, description='Strike Price (K):')
+    
+    def update(K):
+        display(results(S_0, r, vol, T, K))
+    
+    widgets.interact(update, K=K_slider)
+interactive_option_pricing(S_0, r, vol, T) 
 
+"""
