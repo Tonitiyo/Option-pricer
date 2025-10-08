@@ -43,19 +43,6 @@ def BS_call_put(S_0, r, vol, T, K):
     
     return call_price, put_price
 
-"""
-#Binomial Tree pricing model 
-def bin_tree_call_put(S_0, r, vol, T, K, n_steps=100):
-    dt = T/n_steps
-    u = np.exp(vol * np.sqrt(dt))
-    d = 1/u
-    p = (np.exp(r * dt) - d) / (u - d) 
-    # Initialize asset prices at maturity
-"""
-
-
-#Show all results in a DataFrame
-
 def results(S_0, r, vol, T, K):
     mc_results = monte_carlo_call_put(S_0, r, vol, T, K)
     bs_results = BS_call_put(S_0, r, vol, T, K)
@@ -69,15 +56,6 @@ def results(S_0, r, vol, T, K):
 
 print(results(S_0, r, vol, T, K = 40))
 
-"""
-# Interactive widget to change strike price and see results
-def interactive_option_pricing(S_0, r, vol, T):
-    K_slider = widgets.FloatSlider(value=40, min=10, max=70, step=1, description='Strike Price (K):')
-    
-    def update(K):
-        display(results(S_0, r, vol, T, K))
-    
-    widgets.interact(update, K=K_slider)
-interactive_option_pricing(S_0, r, vol, T) 
-
-"""
+# export results to csv file
+results_df = results(S_0, r, vol, T, K = 40)
+results_df.to_csv('option_pricing_results.csv', index=False)
