@@ -2,8 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import scipy.stats as stats
-import ipywidgets as widgets
-from IPython.display import display
 
 # Parameters
 S_0 = 40
