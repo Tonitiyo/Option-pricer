@@ -4,7 +4,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pricing import monte_carlo_call_put
 
-def plot_gbm(S_0, r, vol, T, n_simulations=10, n_steps=100):
+# Parameters
+S_0 = 40
+r = .03
+vol = .2
+T = 1/3
+
+
+def plot_gbm(S_0, r, vol, T, n_simulations=10000, n_steps=100):
     dt = T / n_steps
     t = np.linspace(0, T, n_steps)
     
@@ -39,3 +46,6 @@ def plot_option_convergence(S_0, r, vol, T, K, max_simulations=100000, step=1000
     plt.legend()
     plt.grid()
     plt.show()
+
+print(plot_gbm(S_0, r, vol, T, n_simulations=10000, n_steps=100))
+print(plot_option_convergence(S_0, r, vol, T, K=40, max_simulations=1000, step=100))

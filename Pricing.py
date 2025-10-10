@@ -2,7 +2,9 @@
 
 import numpy as np
 import scipy.stats as stats
+import pandas as pd
 
+# Parameters
 S_0 = 40
 r = .03
 vol = .2
@@ -24,7 +26,18 @@ def monte_carlo_call_put(S_0, r, vol, T, K, n_simulations=10000):
     
     return call_price, put_price
 
-print(monte_carlo_call_put(S_0, r, vol, T, K = 40, n_simulations=100000))
+def result_mc(S_0, r, vol, T, K):
+    mc_10_scenarios = monte_carlo_call_put(S_0, r, vol, T, K, n_simulations=10)
+    mc_100_scenarios = monte_carlo_call_put(S_0, r, vol, T, K, n_simulations=100)
+    mc_1000_scenarios = monte_carlo_call_put(S_0, r, vol, T, K, n_simulations=1000)
+    mc_10000_scenarios = monte_carlo_call_put(S_0, r, vol, T, K, n_simulations=10000)
+    mc_100000_scenarios = monte_carlo_call_put(S_0, r, vol, T, K, n_simulations=100000)
+    results_mc = pd.DataFrame({
+        'Methods': ['MC 10 scenarios', 'MC 100 scenarios', 'MC 1000 scenarios', 'MC 10000 scenarios', 'MC 100000 scenarios'],
+        'Call Price': [mc_10_scenarios[0], mc_100_scenarios[0], mc_1000_scenarios[0], mc_10000_scenarios[0], mc_100000_scenarios[0]],
+        'Put Price': [mc_10_scenarios[1], mc_100_scenarios[1],  mc_1000_scenarios[1], mc_10000_scenarios[1], mc_100000_scenarios[1]]
+    })
+    return results_mc
 
 
 #Pricing options using B&S formula
@@ -39,3 +52,21 @@ def BS_call_put(S_0, r, vol, T, K):
     return call_price, put_price
 
 print(BS_call_put(S_0, r, vol, T, K = 40))
+
+def result_bs(S_0, r, vol, T, K):
+    bs_price = BS_call_put(S_0, r, vol, T, K)
+    bs_results = pd.DataFrame({
+        'Methods' : ["Black and Scholes"],
+        'Call Price' : [bs_price[0]],
+        'Put Price' : [bs_price[1]]
+    })
+    return bs_results
+
+
+def result(S_0, r, vol, T, K):
+    mc_results = result_mc(S_0, r, vol, T, K)
+    bs_results = result_bs(S_0, r, vol, T, K)
+    combined_results = pd.concat([mc_results, bs_results], ignore_index=True)
+    return combined_results
+
+print(result(S_0, r, vol, T, K = 40))

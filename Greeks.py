@@ -5,9 +5,15 @@ import pandas as pd
 import scipy.stats as stats
 from pricing import monte_carlo_call_put
 
+# Parameters
+S_0 = 40
+r = .03
+vol = .2
+T = 1/3
+
 
 #Calcul du delta, gamma et vega 
-def greeks(S_0, r, vol, T, K, n_simulations=10000):
+def greeks_mc(S_0, r, vol, T, K, n_simulations=10000):
     # Base prices
     call_price, put_price = monte_carlo_call_put(S_0, r, vol, T, K, n_simulations)
     
@@ -45,7 +51,7 @@ def greeks(S_0, r, vol, T, K, n_simulations=10000):
 
 #print(greeks(S_0, r, vol, T, K = 40))
 
-def delta_vega_BS(S_0, r, vol, T, K):
+def greeks_bs(S_0, r, vol, T, K):
     d1 = (np.log(S_0 / K) + (r + 0.5 * vol**2) * T) / (vol * np.sqrt(T))
     
     delta_call = stats.norm.cdf(d1)
@@ -62,3 +68,5 @@ def delta_vega_BS(S_0, r, vol, T, K):
     })
     
     return greeks_bs_df
+
+print([greeks_bs(S_0, r, vol, T, K = 40)], [greeks_mc(S_0, r, vol, T, K = 40)])
