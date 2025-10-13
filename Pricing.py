@@ -6,7 +6,7 @@ import pandas as pd
 
 # Parameters
 S_0 = 40
-r = .03
+r = .032
 vol = .2
 T = 1/3
 
@@ -32,11 +32,35 @@ def result_mc(S_0, r, vol, T, K):
     mc_1000_scenarios = monte_carlo_call_put(S_0, r, vol, T, K, n_simulations=1000)
     mc_10000_scenarios = monte_carlo_call_put(S_0, r, vol, T, K, n_simulations=10000)
     mc_100000_scenarios = monte_carlo_call_put(S_0, r, vol, T, K, n_simulations=100000)
+    mc_1000000_scenarios = monte_carlo_call_put(S_0, r, vol, T, K, n_simulations=1000000)
+
     results_mc = pd.DataFrame({
-        'Methods': ['MC 10 scenarios', 'MC 100 scenarios', 'MC 1000 scenarios', 'MC 10000 scenarios', 'MC 100000 scenarios'],
-        'Call Price': [mc_10_scenarios[0], mc_100_scenarios[0], mc_1000_scenarios[0], mc_10000_scenarios[0], mc_100000_scenarios[0]],
-        'Put Price': [mc_10_scenarios[1], mc_100_scenarios[1],  mc_1000_scenarios[1], mc_10000_scenarios[1], mc_100000_scenarios[1]]
+        'Methods': [
+            'MC 10 scenarios',
+            'MC 100 scenarios',
+            'MC 1000 scenarios',
+            'MC 10000 scenarios',
+            'MC 100000 scenarios',
+            'MC 1000000 scenarios'   # ← added the missing label
+        ],
+        'Call Price': [
+            mc_10_scenarios[0],
+            mc_100_scenarios[0],
+            mc_1000_scenarios[0],
+            mc_10000_scenarios[0],
+            mc_100000_scenarios[0],
+            mc_1000000_scenarios[0]
+        ],
+        'Put Price': [
+            mc_10_scenarios[1],
+            mc_100_scenarios[1],
+            mc_1000_scenarios[1],
+            mc_10000_scenarios[1],
+            mc_100000_scenarios[1],
+            mc_1000000_scenarios[1]
+        ]
     })
+
     return results_mc
 
 
