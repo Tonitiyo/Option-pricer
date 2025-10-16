@@ -94,3 +94,26 @@ def result(S_0, r, vol, T, K):
     return combined_results
 
 print(result(S_0, r, vol, T, K = 40))
+
+#Optional - Price a call and put time dependent option for Monte Carlo 
+def monte_carlo_time_dependent(S_0, r, vol, T, K, n_simulations=10000, n_steps=100):
+    dt = T / n_steps
+    discount_factor = np.exp(-r * T)
+    
+    call_payoffs = []
+    put_payoffs = []
+    
+    for _ in range(n_simulations):
+        S_t = S_0
+        for _ in range(n_steps):
+            Z = np.random.normal(0, 1)
+            S_t *= np.exp((r - 0.5 * vol**2) * dt + vol * np.sqrt(dt) * Z)
+        
+        call_payoffs.append(max(S_t - K, 0))
+        put_payoffs.append(max(K - S_t, 0))
+    
+    call_price = discount_factor * np.mean(call_payoffs)
+    put_price = discount_factor * np.mean(put_payoffs)
+    
+    return call_price, put_price
+

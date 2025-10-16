@@ -7,7 +7,7 @@ from pricing import monte_carlo_call_put
 
 # Parameters
 S_0 = 40
-r = .03
+r = .032
 vol = .2
 T = 1/3
 
@@ -46,7 +46,6 @@ def greeks_mc(S_0, r, vol, T, K, n_simulations=10000):
         'Greeks': ['Delta Call', 'Delta Put', 'gamma_call', 'gamma_put', 'Vega Call', 'Vega Put'],
         'Values': [delta_call, delta_put, gamma_call, gamma_put, vega_call, vega_put]
     })
-    
     return greeks_df
 
 #print(greeks(S_0, r, vol, T, K = 40))

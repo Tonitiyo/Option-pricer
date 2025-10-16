@@ -2,13 +2,15 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from pricing import monte_carlo_call_put
+from pricing import monte_carlo_call_put, BS_call_put
+from greeks import greeks_mc, greeks_bs
 
 # Parameters
 S_0 = 40
-r = .03
+r = .032
 vol = .2
 T = 1/3
+k = 40
 
 
 def plot_gbm(S_0, r, vol, T, n_simulations=10000, n_steps=100):
@@ -28,24 +30,45 @@ def plot_gbm(S_0, r, vol, T, n_simulations=10000, n_steps=100):
     plt.show()
 
 
-def plot_option_convergence(S_0, r, vol, T, K, max_simulations=100000, step=1000):
-    simulations = range(step, max_simulations + 1, step)
+def plot_convergence(S_0, r, vol, T, K, max_simulations=100000, step=2000):
+    
+    #Show Monte Carlo convergence toward Black–Scholes analytical prices.
+    
+    simulations = np.arange(step, max_simulations + 1, step)
     call_prices, put_prices = [], []
-    
+
+    # Simulation Monte Carlo pour différents N
     for n in simulations:
-        call_price, put_price = monte_carlo_call_put(S_0, r, vol, T, K, n)
-        call_prices.append(call_price)
-        put_prices.append(put_price)
+        call, put = monte_carlo_call_put(S_0, r, vol, T, K, n_simulations=n)
+        call_prices.append(call)
+        put_prices.append(put)
+
+    # Référence Black–Scholes
+    bs_call, bs_put = BS_call_put(S_0, r, vol, T, K)
+
+    # --- PLOT ---
+    plt.figure(figsize=(12, 6))
     
-    plt.figure(figsize=(10, 6))
-    plt.plot(simulations, call_prices, label="Call Price")
-    plt.plot(simulations, put_prices, label="Put Price")
-    plt.title("Monte Carlo Price Convergence")
-    plt.xlabel("Number of Simulations")
-    plt.ylabel("Option Price")
-    plt.legend()
-    plt.grid()
+    # Courbes Monte Carlo
+    plt.plot(simulations, call_prices, color='royalblue', lw=1.4, label="Monte Carlo Call Price")
+    plt.plot(simulations, put_prices, color='darkorange', lw=1.4, label="Monte Carlo Put Price")
+
+    # Lignes horizontales BS
+    plt.axhline(bs_call, color='red', linestyle='--', lw=2, label=f"BS Call = {bs_call:.4f}")
+    plt.axhline(bs_put, color='green', linestyle='--', lw=2, label=f"BS Put = {bs_put:.4f}")
+
+    # Texte d’annotation
+    plt.text(max_simulations * 0.6, bs_call + 0.01, "→ BS Call target", color='red', fontsize=10)
+    plt.text(max_simulations * 0.6, bs_put - 0.02, "→ BS Put target", color='green', fontsize=10)
+
+    # Mise en forme
+    plt.title("Monte Carlo Convergence toward Black–Scholes Prices", fontsize=14, fontweight='bold')
+    plt.xlabel("Number of Simulations", fontsize=12)
+    plt.ylabel("Option Price", fontsize=12)
+    plt.grid(True, alpha=0.3)
+    plt.legend(fontsize=11)
+    plt.tight_layout()
     plt.show()
 
-print(plot_gbm(S_0, r, vol, T, n_simulations=10000, n_steps=100))
-print(plot_option_convergence(S_0, r, vol, T, K=40, max_simulations=1000, step=100))
+
+print(plot_convergence(S_0, r, vol, T, k, max_simulations=100000, step=2000))

@@ -34,4 +34,4 @@ def plot_convergence(S_0, r, vol, T, K, max_simulations=100000, step=1000):
     plt.grid(True)
     plt.show()
 
-print(plot_convergence(40, 0.03, 0.2, 1/3, 40, max_simulations=10000000, step=10000))
+print(plot_convergence(40, 0.03, 0.2, 1/3, 40, max_simulations=1000000, step=10000))
