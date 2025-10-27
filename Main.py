@@ -18,6 +18,5 @@ print("\nBlack–Scholes Greeks:\n", greeks_bs(S_0, r, vol, T, K))
 plot_gbm(S_0, r, vol, T, n_simulations=20)
 plot_convergence(S_0, r, vol, T, K, max_simulations=100000, step=10000)
 
-# Convergence test
-print("\nConvergence Table:\n", plot_convergence(S_0, r, vol, T, K))
+
 
