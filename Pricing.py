@@ -41,7 +41,7 @@ def result_mc(S_0, r, vol, T, K):
             'MC 1000 scenarios',
             'MC 10000 scenarios',
             'MC 100000 scenarios',
-            'MC 1000000 scenarios'   # ← added the missing label
+            'MC 1000000 scenarios'  
         ],
         'Call Price': [
             mc_10_scenarios[0],
@@ -116,4 +116,5 @@ def monte_carlo_time_dependent(S_0, r, vol, T, K, n_simulations=10000, n_steps=1
     put_price = discount_factor * np.mean(put_payoffs)
     
     return call_price, put_price
+
 
